@@ -98,7 +98,6 @@
 
         header { padding: 40px 20px; text-align: center; max-width: 800px; }
         h1 { font-size: 3.5rem; margin: 0; background: linear-gradient(90deg, #fff, var(--primary-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
     </style>
 </head>
 <body>
@@ -144,6 +143,8 @@
                 <h2 style="color: var(--success-green); margin-top: 0;">2. List Your Item</h2>
                 <p style="font-size: 0.8rem; color: var(--text-gray); margin-bottom: 15px;">Earn by lending your tools/gear.</p>
                 
+                <input type="hidden" id="hiddenEmail" name="UserEmail">
+                
                 <label>Item Name</label>
                 <input type="text" name="ItemName" placeholder="Ex: Camping Tent" required>
                 
@@ -165,13 +166,12 @@
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
-            
             <div class="item-card">
                 <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹150/DAY</div>
                 <img src="download.jfif" class="item-img" alt="Travel Trolley" onerror="this.src='https://via.placeholder.com/300x200?text=Trolley+Bag'">
                 <h3>Premium Trolley Bag</h3>
                 <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Large hard-shell spinner. Smooth wheels.</p>
-                <button onclick="checkActivation('Travel Trolley', 150)" class="cta-button" style="width: 80%;">REQUEST RENTAL</button>
+                <button onclick="checkActivation('Travel Trolley', 150)" class="cta-button">REQUEST RENTAL</button>
             </div>
 
             <div class="item-card">
@@ -179,7 +179,7 @@
                 <img src="download (1).jfif" class="item-img" alt="Drill" onerror="this.src='https://via.placeholder.com/300x200?text=Power+Drill'">
                 <h3>Power Drill Kit</h3>
                 <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">High torque, includes bits.</p>
-                <button onclick="checkActivation('Power Drill Kit', 250)" class="cta-button" style="width: 80%;">REQUEST RENTAL</button>
+                <button onclick="checkActivation('Power Drill Kit', 250)" class="cta-button">REQUEST RENTAL</button>
             </div>
 
             <div class="item-card">
@@ -187,7 +187,7 @@
                 <img src="download (2).jfif" class="item-img" alt="Chairs" onerror="this.src='https://via.placeholder.com/300x200?text=Chair+Set'">
                 <h3>Guest Chair Set</h3>
                 <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Set of 2 foldable chairs.</p>
-                <button onclick="checkActivation('Guest Chair Set', 100)" class="cta-button" style="width: 80%;">REQUEST RENTAL</button>
+                <button onclick="checkActivation('Guest Chair Set', 100)" class="cta-button">REQUEST RENTAL</button>
             </div>
 
             <div class="item-card">
@@ -195,9 +195,8 @@
                 <img src="download (3).jfif" class="item-img" alt="Iron" onerror="this.src='https://via.placeholder.com/300x200?text=Iron+Box'">
                 <h3>Iron Box</h3>
                 <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Non-stick soleplate.</p>
-                <button onclick="checkActivation('Iron Box', 50)" class="cta-button" style="width: 80%;">REQUEST RENTAL</button>
+                <button onclick="checkActivation('Iron Box', 50)" class="cta-button">REQUEST RENTAL</button>
             </div>
-
         </div>
     </section>
 
@@ -207,44 +206,41 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwZ6pHe4URPwaBkKl2GB7muz2T_nVI2543P-9jzTGnpyHbrbXDQbkxpYM8ebH9b2XXO/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxyndQpBK9SrBu5g29lyin7EyaoWemnj6xjMjMgchL94mU89wADQMO1cyOpTPJXlEE/exec';
         const activationContainer = document.getElementById('activation-container');
-        const itemContainer = document.getElementById('item-container'); // THE HIDDEN BOX
+        const itemContainer = document.getElementById('item-container');
         const itemForm = document.getElementById('itemForm');
+        
         let isNodeActive = false; 
+        let globalUserName = ""; 
 
-        // 1. User Activation Logic
+        // 1. Activation Logic
         document.getElementById('neighborForm').addEventListener('submit', e => {
             e.preventDefault();
             const form = e.target;
             const btn = form.querySelector('button');
+            const emailValue = form.querySelector('[name="Email"]').value;
+            globalUserName = form.querySelector('[name="Full Name"]').value;
+
             btn.innerText = "SYNCING NODE...";
             btn.disabled = true;
 
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
             .then(response => {
                 isNodeActive = true; 
-                
-                // UNLOCK THE LISTING FORM
                 itemContainer.style.display = 'block'; 
+                document.getElementById('hiddenEmail').value = emailValue; 
                 
-                const userName = form.querySelector('[name="Full Name"]').value;
                 activationContainer.innerHTML = `
                     <div style="text-align: center; padding: 10px;">
-                        <h2 style="color: var(--primary-cyan); margin:0;">WELCOME, ${userName.toUpperCase()}!</h2>
-                        <p style="color: var(--text-gray);">Your Node is now Active. You can now rent or list items.</p>
-                        <button onclick="document.getElementById('inventory').scrollIntoView({behavior: 'smooth'})" class="cta-button">BROWSE ITEMS</button>
+                        <h2 style="color: var(--primary-cyan); margin:0;">WELCOME, ${globalUserName.toUpperCase()}!</h2>
+                        <p style="color: var(--text-gray);">Node Active. You can now rent or list items below.</p>
                     </div>
                 `;
-            })
-            .catch(error => {
-                console.error('Error!', error.message);
-                btn.innerText = "TRY AGAIN";
-                btn.disabled = false;
             });
         });
 
-        // 2. Item Listing Logic
+        // 2. Listing Logic
         itemForm.addEventListener('submit', e => {
             e.preventDefault();
             const btn = itemForm.querySelector('button');
@@ -257,37 +253,39 @@
                 itemForm.reset();
                 btn.innerText = "SUBMIT ANOTHER ITEM";
                 btn.disabled = false;
-            })
-            .catch(error => {
-                alert("Error uploading item. Please try again.");
-                btn.innerText = "SUBMIT ITEM FOR REVIEW";
-                btn.disabled = false;
             });
         });
 
-        // 3. Rental Check
+        // 3. Rental Logic
         function checkActivation(itemName, price) {
             if (!isNodeActive) {
-                alert("Please 'Activate Your Node' at the top of the page first!");
+                alert("Please 'Activate Your Node' at the top first!");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 const phone = "918497956893";
-                const message = `Hi! My Node is active. I want to rent the ${itemName} for ₹${price}.`;
+                const message = `Hi! This is ${globalUserName}. My Node is active. I want to rent the ${itemName} for ₹${price}.`;
                 window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
             }
         }
 
         // 4. Status Animation
         const nodeText = document.getElementById('nodeCounter');
-        const statuses = ["📡 SCANNING KUKATPALLY SECTOR 4...", "🔐 ENCRYPTING NODE CONNECTION...", "✅ NODE SECURE: 14 NEIGHBORS ONLINE", "📍 LOCAL HUB ACTIVE"];
+        const statuses = ["📡 SCANNING KUKATPALLY...", "🔐 ENCRYPTING NODE...", "✅ 14 NEIGHBORS ONLINE", "📍 HUB ACTIVE"];
         let statusIdx = 0;
         setInterval(() => {
             nodeText.innerText = statuses[statusIdx % statuses.length];
             statusIdx++;
         }, 3000);
 
-        // 5. Dropdown Logic
-        const stateData = {"Telangana": "Hyderabad", "Andhra Pradesh": "Amaravati", "Karnataka": "Bengaluru", "Maharashtra": "Mumbai", "Tamil Nadu": "Chennai", "Delhi": "New Delhi"};
+        // 5. DROPDOWN DATA (ALL STATES)
+        const stateData = {
+            "Telangana": "Hyderabad", 
+            "Andhra Pradesh": "Amaravati", 
+            "Karnataka": "Bengaluru", 
+            "Maharashtra": "Mumbai", 
+            "Tamil Nadu": "Chennai", 
+            "Delhi": "New Delhi"
+        };
         const countrySelect = document.getElementById('country');
         const stateSelect = document.getElementById('state');
         const citySelect = document.getElementById('city');
@@ -295,12 +293,8 @@
         countrySelect.addEventListener('change', function() {
             if (this.value === "India") {
                 stateSelect.disabled = false;
-                stateSelect.innerHTML = '<option value="">Select State</option>';
-                Object.keys(stateData).forEach(state => {
-                    let opt = document.createElement('option');
-                    opt.value = state; opt.innerHTML = state;
-                    stateSelect.appendChild(opt);
-                });
+                stateSelect.innerHTML = '<option value="">Select State</option>' + 
+                    Object.keys(stateData).map(s => `<option value="${s}">${s}</option>`).join('');
             }
         });
 
