@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeighborNode | Smart Neighborhood Network</title>
+    <style>
+        :root {
+            --primary-cyan: #00f2ff;
+            --bg-dark: #0a0e14;
+            --card-bg: #161b22;
+            --text-gray: #8b949e;
+            --success-green: #2ea043;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* BUTTONS & CARDS */
+        .cta-button, .submit-btn {
+            background: var(--primary-cyan);
+            color: black;
+            font-weight: bold;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
+            transform: scale(1.02);
+        }
+
+        .item-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #30363d;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .item-card:hover {
+            border-color: var(--primary-cyan) !important;
+            background: rgba(0, 242, 255, 0.05) !important;
+            transform: translateY(-5px);
+        }
+
+        .item-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background: #000;
+        }
+
+        header { padding: 60px 20px; text-align: center; max-width: 800px; }
+        h1 { font-size: 3.5rem; margin: 0; background: linear-gradient(90deg, #fff, var(--primary-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .form-container {
+            background: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        input {
+            width: 100%; padding: 12px; margin-top: 5px; margin-bottom: 15px;
+            border-radius: 8px; border: 1px solid #30363d; background: #0d1117; color: white; box-sizing: border-box;
+        }
+
+        label { color: var(--primary-cyan); font-size: 0.75rem; text-transform: uppercase; font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="color: var(--primary-cyan); font-weight: bold; margin-bottom: 10px; font-size: 0.8rem; letter-spacing: 2px;">
+            📡 SYNCING LOCAL NODE: KUKATPALLY
+        </div>
+        <h1>NeighborNode</h1>
+        <p style="color: var(--text-gray);">Pay neighbors, not corporations. Direct INR rentals.</p>
+
+        <div id="form-container" class="form-container">
+           <form id="neighborForm">
+    <h2 style="margin-top: 0;">Activate Your Node</h2>
+    <div style="text-align: left;">
+        <label>Full Name</label>
+        <input type="text" name="Full Name" placeholder="Ex: Rahul Sharma" required>
+        
+        <label>Neighborhood / Building</label>
+        <input type="text" name="Neighborhood" placeholder="Ex: Skyline Apartments, Kukatpally" required>
+        
+        <label>Email Address</label>
+        <input type="email" name="Email" placeholder="rahul@example.com" required>
+    </div>
+    <button type="submit" class="submit-btn" style="width: 100%;">ACTIVATE MY NODE</button>
+</form>
+        </div>
+    </header>
+
+    <section id="inventory" style="padding: 40px 20px; max-width: 1100px; width: 100%;">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="color: var(--primary-cyan); letter-spacing: 2px;">NEIGHBOR INVENTORY</h2>
+            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
+                <span style="color: #3fb950; font-size: 0.75rem; background: rgba(63, 185, 80, 0.1); padding: 5px 12px; border-radius: 15px; border: 1px solid #3fb950;">● 12 Neighbors Online</span>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+            
+            <div class="item-card">
+                <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹150/DAY</div>
+                <img src="download.jfif" class="item-img" alt="Travel Trolley">
+                <h3 style="margin: 10px 0 5px 0;">Premium Trolley Bag</h3>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Large hard-shell spinner. Smooth wheels.</p>
+                <a href="https://wa.me/918497956893?text=Hi!%20I%20want%20to%20rent%20the%20Travel%20Bag%20for%20₹150." target="_blank" class="cta-button" style="width: 80%;">REQUEST RENTAL</a>
+            </div>
+
+            <div class="item-card">
+                <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹250/DAY</div>
+                <img src="download (1).jfif" class="item-img" alt="Drill">
+                <h3 style="margin: 10px 0 5px 0;">Power Drill Kit</h3>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">High torque, includes bits. Best for wall mounting.</p>
+                <a href="https://wa.me/918497956893?text=Hi!%20I%20want%20to%20rent%20the%20Drill%20for%20₹250." target="_blank" class="cta-button" style="width: 80%;">REQUEST RENTAL</a>
+            </div>
+
+            <div class="item-card">
+                <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹100/DAY</div>
+                <img src="download (2).jfif" class="item-img" alt="Chairs">
+                <h3 style="margin: 10px 0 5px 0;">Guest Chair Set</h3>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Set of 2 foldable chairs. Sturdy and clean.</p>
+                <a href="https://wa.me/918497956893?text=Hi!%20I%20want%20to%20rent%20the%20Chairs%20for%20₹100." target="_blank" class="cta-button" style="width: 80%;">REQUEST RENTAL</a>
+            </div>
+
+            <div class="item-card">
+                <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹50/DAY</div>
+                <img src="download (3).jfif" class="item-img" alt="Iron">
+                <h3 style="margin: 10px 0 5px 0;">Iron Box</h3>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Non-stick soleplate. Perfect for quick crisp shirts.</p>
+                <a href="https://wa.me/918497956893?text=Hi!%20I%20want%20to%20rent%20the%20Iron%20for%20₹50." target="_blank" class="cta-button" style="width: 80%;">REQUEST RENTAL</a>
+            </div>
+
+        </div>
+    </section>
+
+    <section style="padding: 60px 20px; max-width: 900px; margin: 40px auto; background: rgba(0, 242, 255, 0.02); border-radius: 30px; border: 1px solid #30363d; text-align: center;">
+        <h2 style="color: var(--primary-cyan); letter-spacing: 2px;">COMMUNITY TRUST RULES</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
+            <div>
+                <div style="font-size: 2rem;">🪪</div>
+                <h4 style="color: white;">ID Proof</h4>
+                <p style="color: #8b949e; font-size: 0.8rem;">Aadhar/ID verification may be required by owners.</p>
+            </div>
+            <div>
+                <div style="font-size: 2rem;">💰</div>
+                <h4 style="color: white;">Refundable Deposit</h4>
+                <p style="color: #8b949e; font-size: 0.8rem;">Small deposit back on safe return.</p>
+            </div>
+            <div>
+                <div style="font-size: 2rem;">🤝</div>
+                <h4 style="color: white;">Fair Rental</h4>
+                <p style="color: #8b949e; font-size: 0.8rem;">Return clean and on time.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer style="background: #0d1117; padding: 50px 20px; border-top: 1px solid #30363d; width: 100%; text-align: center;">
+        <h2 style="color: var(--primary-cyan);">NeighborNode</h2>
+        <p style="color: #8b949e; font-size: 0.9rem;">Building trust in Kukatpally, Hyderabad.</p>
+        <p style="color: #484f58; font-size: 0.8rem; margin-top: 20px;">&copy; 2026 NeighborNode. Built for the community.</p>
+    </footer>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz4iIIA09PclohX6N8PuZEdjs6xn1Fk_lfRpWtAcSvq-8Gl5_NJm1ARiIrVsW5pBkbM/exec';
+        const form = document.getElementById('neighborForm');
+        const container = document.getElementById('form-container');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = form.querySelector('button');
+            btn.innerText = "SYNCING NODE...";
+            btn.disabled = true;
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                const userName = form.querySelector('[name="Full Name"]').value;
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <h2 style="color: var(--primary-cyan);">NODE ACTIVE: ${userName.toUpperCase()}</h2>
+                        <p>Welcome to the network. Browse items below.</p>
+                        <button onclick="document.getElementById('inventory').scrollIntoView({behavior: 'smooth'})" class="cta-button">EXPLORE GEAR</button>
+                    </div>
+                `;
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                btn.innerText = "TRY AGAIN";
+                btn.disabled = false;
+            });
+        });
+        // This makes the "Syncing" text look real
+const nodeText = document.getElementById('nodeCounter');
+const statuses = [
+    "📡 SCANNING KUKATPALLY SECTOR 4...",
+    "🔐 ENCRYPTING NODE CONNECTION...",
+    "✅ NODE SECURE: 14 NEIGHBORS ONLINE",
+    "📍 LOCAL HUB ACTIVE"
+];
+let i = 0;
+
+setInterval(() => {
+    nodeText.innerText = statuses[i % statuses.length];
+    i++;
+}, 3000); // Changes every 3 seconds
+    </script>
+</body>
+</html>
