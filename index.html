@@ -67,6 +67,23 @@
             margin-bottom: 15px;
             background: #000;
         }
+        select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    background: #0d1117;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
         header { padding: 60px 20px; text-align: center; max-width: 800px; }
         h1 { font-size: 3.5rem; margin: 0; background: linear-gradient(90deg, #fff, var(--primary-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -101,13 +118,33 @@
 
         <div id="form-container" class="form-container">
            <form id="neighborForm">
+
     <h2 style="margin-top: 0;">Activate Your Node</h2>
     <div style="text-align: left;">
         <label>Full Name</label>
         <input type="text" name="Full Name" placeholder="Ex: Rahul Sharma" required>
         
-        <label>Neighborhood / Building</label>
-        <input type="text" name="Neighborhood" placeholder="Ex: Skyline Apartments, Kukatpally" required>
+        <div class="form-group">
+    <label>Country</label>
+    <select id="country" name="Country" required>
+        <option value="">Select Country</option>
+        <option value="India">India</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>State</label>
+    <select id="state" name="State" disabled required>
+        <option value="">Select State</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>District/City (Capital)</label>
+    <select id="city" name="City" disabled required>
+        <option value="">Select Capital</option>
+    </select>
+</div>
         
         <label>Email Address</label>
         <input type="email" name="Email" placeholder="rahul@example.com" required>
@@ -230,7 +267,49 @@ let i = 0;
 setInterval(() => {
     nodeText.innerText = statuses[i % statuses.length];
     i++;
-}, 3000); // Changes every 3 seconds
+}, 3000); 
+const stateData = {
+    "Telangana": "Hyderabad",
+    "Andhra Pradesh": "Amaravati",
+    "Karnataka": "Bengaluru",
+    "Maharashtra": "Mumbai",
+    "Tamil Nadu": "Chennai",
+    "Delhi": "New Delhi",
+    "Kerala": "Thiruvananthapuram"
+};
+
+const countrySelect = document.getElementById('country');
+const stateSelect = document.getElementById('state');
+const citySelect = document.getElementById('city');
+
+// 1. When Country is selected, enable States
+countrySelect.addEventListener('change', function() {
+    if (this.value === "India") {
+        stateSelect.disabled = false;
+        // Populate states
+        stateSelect.innerHTML = '<option value="">Select State</option>';
+        Object.keys(stateData).forEach(state => {
+            let opt = document.createElement('option');
+            opt.value = state;
+            opt.innerHTML = state;
+            stateSelect.appendChild(opt);
+        });
+    } else {
+        stateSelect.disabled = true;
+        citySelect.disabled = true;
+    }
+});
+
+// 2. When State is selected, enable and show Capital
+stateSelect.addEventListener('change', function() {
+    if (this.value !== "") {
+        citySelect.disabled = false;
+        const capital = stateData[this.value];
+        citySelect.innerHTML = `<option value="${capital}">${capital}</option>`;
+    } else {
+        citySelect.disabled = true;
+    }
+});// Changes every 3 seconds
     </script>
 </body>
 </html>
