@@ -133,7 +133,12 @@
                 
                 <label>Email Address</label>
                 <input type="email" name="Email" placeholder="rahul@example.com" required>
-                
+                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; text-align: left;">
+    <input type="checkbox" id="terms" name="Terms" required style="width: 20px; height: 20px; margin: 0; cursor: pointer;">
+    <label for="terms" style="color: var(--text-gray); font-size: 0.8rem; text-transform: none; font-weight: normal;">
+        I agree to the <a href="#" onclick="showTerms()" style="color: var(--primary-cyan); text-decoration: underline;">Community Guidelines</a> and promise to treat neighbor assets with respect.
+    </label>
+</div>
                 <button type="submit" class="submit-btn">ACTIVATE MY NODE</button>
             </form>
         </div>
@@ -308,6 +313,18 @@
                     Object.keys(stateData).map(s => `<option value="${s}">${s}</option>`).join('');
             }
         });
+        function showTerms() {
+    const guidelines = `
+NEIGHBORNODE COMMUNITY RULES:
+1. Handshake Inspection: Take photos of the item before & after.
+2. Respect: Treat borrowed items like your own.
+3. Damage: Renters pay for repairs of significant damage.
+4. Accountability: One-strike policy for bad actors.
+5. Safety: Meet in public spaces or building lobbies.
+
+Do you agree to follow these local rules?`;
+    alert(guidelines);
+}
 
         stateSelect.addEventListener('change', function() {
             if (this.value !== "") {
