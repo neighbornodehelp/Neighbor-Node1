@@ -199,7 +199,12 @@
             </div>
         </div>
     </section>
-
+<div style="margin: 40px auto; text-align: center; max-width: 400px; padding: 20px;">
+    <p style="color: var(--text-gray); font-size: 0.9rem;">Help the network grow!</p>
+    <button onclick="shareNode()" class="cta-button" style="background: transparent; border: 2px solid var(--primary-cyan); color: var(--primary-cyan);">
+        📢 INVITE NEIGHBORS
+    </button>
+</div>
     <footer style="background: #0d1117; padding: 50px 20px; border-top: 1px solid #30363d; width: 100%; text-align: center;">
         <h2 style="color: var(--primary-cyan);">NeighborNode</h2>
         <p style="color: #484f58; font-size: 0.8rem; margin-top: 20px;">&copy; 2026 NeighborNode.</p>
@@ -239,6 +244,12 @@
                 `;
             });
         });
+        function shareNode() {
+    const url = window.location.href; // Grabs your website link automatically
+    const text = "Hi Neighbors! Check out NeighborNode. It's a local rental network I'm using to rent and lend tools/gear in our area. Activate your node here: ";
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + url)}`;
+    window.open(whatsappUrl, '_blank');
+}
 
         // 2. Listing Logic
         itemForm.addEventListener('submit', e => {
