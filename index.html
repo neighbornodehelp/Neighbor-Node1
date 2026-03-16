@@ -23,6 +23,17 @@
             align-items: center;
         }
 
+        .form-container {
+            background: var(--card-bg);
+            border: 1px solid #30363d;
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+            box-sizing: border-box;
+        }
+
         .cta-button, .submit-btn {
             background: var(--primary-cyan);
             color: black;
@@ -35,7 +46,8 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
-            width: 80%;
+            width: 100%;
+            margin-top: 10px;
         }
 
         .cta-button:hover {
@@ -84,18 +96,9 @@
         select:disabled { opacity: 0.5; cursor: not-allowed; }
         label { color: var(--primary-cyan); font-size: 0.75rem; text-transform: uppercase; font-weight: bold; display: block; text-align: left; }
 
-        header { padding: 60px 20px; text-align: center; max-width: 800px; }
+        header { padding: 40px 20px; text-align: center; max-width: 800px; }
         h1 { font-size: 3.5rem; margin: 0; background: linear-gradient(90deg, #fff, var(--primary-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .form-container {
-            background: var(--card-bg);
-            border: 1px solid #30363d;
-            border-radius: 20px;
-            padding: 30px;
-            width: 100%;
-            max-width: 400px;
-            margin: 20px auto;
-        }
     </style>
 </head>
 <body>
@@ -105,11 +108,11 @@
             📡 SYNCING LOCAL NODE: KUKATPALLY
         </div>
         <h1>NeighborNode</h1>
-        <p style="color: var(--text-gray);">Pay neighbors, not corporations. Direct INR rentals.</p>
+        <p style="color: var(--text-gray);">Community-led rentals. Trust the node.</p>
 
-        <div id="form-container" class="form-container">
+        <div id="activation-container" class="form-container">
             <form id="neighborForm">
-                <h2 style="margin-top: 0;">Activate Your Node</h2>
+                <h2 style="margin-top: 0;">1. Activate Your Node</h2>
                 <label>Full Name</label>
                 <input type="text" name="Full Name" placeholder="Ex: Rahul Sharma" required>
                 
@@ -132,7 +135,25 @@
                 <label>Email Address</label>
                 <input type="email" name="Email" placeholder="rahul@example.com" required>
                 
-                <button type="submit" class="submit-btn" style="width: 100%;">ACTIVATE MY NODE</button>
+                <button type="submit" class="submit-btn">ACTIVATE MY NODE</button>
+            </form>
+        </div>
+
+        <div id="item-container" class="form-container" style="border-color: var(--success-green); display: none;">
+            <form id="itemForm">
+                <h2 style="color: var(--success-green); margin-top: 0;">2. List Your Item</h2>
+                <p style="font-size: 0.8rem; color: var(--text-gray); margin-bottom: 15px;">Earn by lending your tools/gear.</p>
+                
+                <label>Item Name</label>
+                <input type="text" name="ItemName" placeholder="Ex: Camping Tent" required>
+                
+                <label>Price per Day (₹)</label>
+                <input type="number" name="Price" placeholder="Ex: 200" required>
+                
+                <label>Your Phone/WhatsApp</label>
+                <input type="tel" name="Contact" placeholder="Your mobile number" required>
+                
+                <button type="submit" class="submit-btn" style="background: var(--success-green);">SUBMIT ITEM FOR REVIEW</button>
             </form>
         </div>
     </header>
@@ -150,31 +171,31 @@
                 <img src="download.jfif" class="item-img" alt="Travel Trolley" onerror="this.src='https://via.placeholder.com/300x200?text=Trolley+Bag'">
                 <h3>Premium Trolley Bag</h3>
                 <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Large hard-shell spinner. Smooth wheels.</p>
-                <button onclick="checkActivation('Travel Trolley', 150)" class="cta-button">REQUEST RENTAL</button>
+                <button onclick="checkActivation('Travel Trolley', 150)" class="cta-button" style="width: 80%;">REQUEST RENTAL</button>
             </div>
 
             <div class="item-card">
                 <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹250/DAY</div>
-                <img src="download(1).jfif" class="item-img" alt="Drill" onerror="this.src='https://via.placeholder.com/300x200?text=Power+Drill'">
+                <img src="download (1).jfif" class="item-img" alt="Drill" onerror="this.src='https://via.placeholder.com/300x200?text=Power+Drill'">
                 <h3>Power Drill Kit</h3>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">High torque, includes bits. Best for wall mounting.</p>
-                <button onclick="checkActivation('Power Drill Kit', 100)" class="cta-button">REQUEST RENTAL</button>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">High torque, includes bits.</p>
+                <button onclick="checkActivation('Power Drill Kit', 250)" class="cta-button" style="width: 80%;">REQUEST RENTAL</button>
             </div>
 
             <div class="item-card">
                 <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹100/DAY</div>
-                <img src="download(2).jfif" class="item-img" alt="Chairs" onerror="this.src='https://via.placeholder.com/300x200?text=Chair+Set'">
+                <img src="download (2).jfif" class="item-img" alt="Chairs" onerror="this.src='https://via.placeholder.com/300x200?text=Chair+Set'">
                 <h3>Guest Chair Set</h3>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Set of 2 foldable chairs. Sturdy and clean.</p>
-                <button onclick="checkActivation('Guest Chair Set', 100)" class="cta-button">REQUEST RENTAL</button>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Set of 2 foldable chairs.</p>
+                <button onclick="checkActivation('Guest Chair Set', 100)" class="cta-button" style="width: 80%;">REQUEST RENTAL</button>
             </div>
 
             <div class="item-card">
                 <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹50/DAY</div>
-                <img src="download(3).jfif" class="item-img" alt="Iron" onerror="this.src='https://via.placeholder.com/300x200?text=Iron+Box'">
+                <img src="download (3).jfif" class="item-img" alt="Iron" onerror="this.src='https://via.placeholder.com/300x200?text=Iron+Box'">
                 <h3>Iron Box</h3>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Non-stick soleplate. Perfect for quick crisp shirts.</p>
-                <button onclick="checkActivation('Iron Box', 50)" class="cta-button">REQUEST RENTAL</button>
+                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Non-stick soleplate.</p>
+                <button onclick="checkActivation('Iron Box', 50)" class="cta-button" style="width: 80%;">REQUEST RENTAL</button>
             </div>
 
         </div>
@@ -182,32 +203,37 @@
 
     <footer style="background: #0d1117; padding: 50px 20px; border-top: 1px solid #30363d; width: 100%; text-align: center;">
         <h2 style="color: var(--primary-cyan);">NeighborNode</h2>
-        <p style="color: #8b949e; font-size: 0.9rem;">Building trust in Kukatpally, Hyderabad.</p>
         <p style="color: #484f58; font-size: 0.8rem; margin-top: 20px;">&copy; 2026 NeighborNode.</p>
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbypecpL5HfCBq619BOcGjkk5hRCvxdQCOddf9UbV9uj8OsRI7RxxgIAm7y5rUZJRLQ6/exec';
-        const form = document.getElementById('neighborForm');
-        const container = document.getElementById('form-container');
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwZ6pHe4URPwaBkKl2GB7muz2T_nVI2543P-9jzTGnpyHbrbXDQbkxpYM8ebH9b2XXO/exec';
+        const activationContainer = document.getElementById('activation-container');
+        const itemContainer = document.getElementById('item-container'); // THE HIDDEN BOX
+        const itemForm = document.getElementById('itemForm');
         let isNodeActive = false; 
 
-        // 1. Form Submission
-        form.addEventListener('submit', e => {
+        // 1. User Activation Logic
+        document.getElementById('neighborForm').addEventListener('submit', e => {
             e.preventDefault();
+            const form = e.target;
             const btn = form.querySelector('button');
             btn.innerText = "SYNCING NODE...";
             btn.disabled = true;
 
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
             .then(response => {
-                isNodeActive = true; // UNLOCKS RENTALS
+                isNodeActive = true; 
+                
+                // UNLOCK THE LISTING FORM
+                itemContainer.style.display = 'block'; 
+                
                 const userName = form.querySelector('[name="Full Name"]').value;
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 20px;">
-                        <h2 style="color: var(--primary-cyan);">NODE ACTIVE: ${userName.toUpperCase()}</h2>
-                        <p>Welcome to the network. Browse items below.</p>
-                        <button onclick="document.getElementById('inventory').scrollIntoView({behavior: 'smooth'})" class="cta-button" style="width:100%">EXPLORE GEAR</button>
+                activationContainer.innerHTML = `
+                    <div style="text-align: center; padding: 10px;">
+                        <h2 style="color: var(--primary-cyan); margin:0;">WELCOME, ${userName.toUpperCase()}!</h2>
+                        <p style="color: var(--text-gray);">Your Node is now Active. You can now rent or list items.</p>
+                        <button onclick="document.getElementById('inventory').scrollIntoView({behavior: 'smooth'})" class="cta-button">BROWSE ITEMS</button>
                     </div>
                 `;
             })
@@ -218,10 +244,31 @@
             });
         });
 
-        // 2. Smart Rental Check
+        // 2. Item Listing Logic
+        itemForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = itemForm.querySelector('button');
+            btn.innerText = "UPLOADING...";
+            btn.disabled = true;
+            
+            fetch(scriptURL, { method: 'POST', body: new FormData(itemForm)})
+            .then(response => {
+                alert("Success! Your item has been sent for review.");
+                itemForm.reset();
+                btn.innerText = "SUBMIT ANOTHER ITEM";
+                btn.disabled = false;
+            })
+            .catch(error => {
+                alert("Error uploading item. Please try again.");
+                btn.innerText = "SUBMIT ITEM FOR REVIEW";
+                btn.disabled = false;
+            });
+        });
+
+        // 3. Rental Check
         function checkActivation(itemName, price) {
             if (!isNodeActive) {
-                alert("Please 'Activate Your Node' at the top of the page first to start renting!");
+                alert("Please 'Activate Your Node' at the top of the page first!");
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 const phone = "918497956893";
@@ -230,7 +277,7 @@
             }
         }
 
-        // 3. Node Status Animation
+        // 4. Status Animation
         const nodeText = document.getElementById('nodeCounter');
         const statuses = ["📡 SCANNING KUKATPALLY SECTOR 4...", "🔐 ENCRYPTING NODE CONNECTION...", "✅ NODE SECURE: 14 NEIGHBORS ONLINE", "📍 LOCAL HUB ACTIVE"];
         let statusIdx = 0;
@@ -239,13 +286,8 @@
             statusIdx++;
         }, 3000);
 
-        // 4. Address Dropdown Logic
-        const stateData = {
-            "Telangana": "Hyderabad", "Andhra Pradesh": "Amaravati", "Karnataka": "Bengaluru",
-            "Maharashtra": "Mumbai", "Tamil Nadu": "Chennai", "Delhi": "New Delhi",
-            "Kerala": "Thiruvananthapuram", "Goa": "Panaji", "Rajasthan": "Jaipur"
-        };
-
+        // 5. Dropdown Logic
+        const stateData = {"Telangana": "Hyderabad", "Andhra Pradesh": "Amaravati", "Karnataka": "Bengaluru", "Maharashtra": "Mumbai", "Tamil Nadu": "Chennai", "Delhi": "New Delhi"};
         const countrySelect = document.getElementById('country');
         const stateSelect = document.getElementById('state');
         const citySelect = document.getElementById('city');
