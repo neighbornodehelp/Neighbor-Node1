@@ -56,6 +56,11 @@
             transform: scale(1.02);
         }
 
+        /* AUTH TABS */
+        .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
+        .tab-btn { background: none; border: 1px solid #30363d; color: var(--text-gray); padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .tab-btn.active { border-color: var(--primary-cyan); color: var(--primary-cyan); background: rgba(0, 242, 255, 0.05); }
+
         .item-card {
             background: rgba(255,255,255,0.03);
             border: 1px solid #30363d;
@@ -94,6 +99,8 @@
             box-sizing: border-box;
         }
 
+        #main-app { display: none; width: 100%; flex-direction: column; align-items: center; }
+
         .search-container {
             width: 100%;
             max-width: 600px;
@@ -123,86 +130,101 @@
 <body>
 
     <header>
-        <div id="nodeCounter" style="color: var(--primary-cyan); font-weight: bold; margin-bottom: 10px; font-size: 0.8rem; letter-spacing: 2px;">
-            📡 INITIALIZING LOCAL NODE...
+        <div id="nodeStatus" style="color: var(--primary-cyan); font-weight: bold; margin-bottom: 10px; font-size: 0.8rem; letter-spacing: 2px;">
+            📡 NODE STATUS: LOCKED
         </div>
         <h1>NeighborNode</h1>
         <p style="color: var(--text-gray);">Community-led rentals. Trust the node.</p>
 
-        <div id="activation-container" class="form-container">
-            <form id="neighborForm">
-                <h2 style="margin-top: 0;">1. Activate Your Node</h2>
+        <div id="auth-box" class="form-container">
+            <div class="auth-tabs">
+                <button id="tab-login" class="tab-btn active" onclick="toggleAuth('login')">LOGIN</button>
+                <button id="tab-signup" class="tab-btn" onclick="toggleAuth('signup')">ACTIVATE NODE</button>
+            </div>
+
+            <form id="loginForm">
+                <label>Registered Email</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                <button type="submit" class="submit-btn">ACCESS NETWORK</button>
+            </form>
+
+            <form id="neighborForm" style="display: none;">
                 <label>Full Name</label>
                 <input type="text" name="Full Name" placeholder="Ex: Rahul Sharma" pattern="[A-Za-z\s]+" title="Letters only" required>
                 
                 <label>Country</label>
                 <select id="country" name="Country" required>
-                    <option value="">Select Country</option>
                     <option value="India">India</option>
                 </select>
 
                 <label>State</label>
-                <select id="state" name="State" disabled required><option value="">Select State</option></select>
+                <select id="state" name="State" required>
+                    <option value="">Select State</option>
+                </select>
 
                 <label>District/City (Capital)</label>
-                <select id="city" name="City" disabled required><option value="">Select Capital</option></select>
+                <select id="city" name="City" required>
+                    <option value="">Select Capital</option>
+                </select>
                 
                 <label>Email Address</label>
                 <input type="email" name="Email" placeholder="rahul@example.com" required>
 
                 <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; text-align: left;">
-                    <input type="checkbox" id="terms" name="Terms" required style="width: 18px; height: 18px; margin-top: 2px; cursor: pointer;">
+                    <input type="checkbox" id="terms" required style="width: 18px; height: 18px; margin-top: 2px;">
                     <label for="terms" style="color: var(--text-gray); font-size: 0.75rem; text-transform: none; font-weight: normal; line-height: 1.2;">
-                        I agree to the <a href="#" onclick="showTerms()" style="color: var(--primary-cyan); text-decoration: underline;">Community Guidelines</a>.
+                        I agree to the <a href="#" onclick="showTerms()" style="color: var(--primary-cyan); text-decoration: underline;">Guidelines</a>.
                     </label>
                 </div>
-                <button type="submit" class="submit-btn">ACTIVATE MY NODE</button>
+
+                <button type="submit" class="submit-btn">ACTIVATE NODE</button>
             </form>
         </div>
+    </header>
 
-        <div id="item-container" class="form-container" style="border-color: var(--success-green); display: none;">
+    <div id="main-app">
+        <div class="form-container" style="border-color: var(--success-green);">
             <form id="itemForm">
                 <h2 style="color: var(--success-green); margin-top: 0;">2. List Your Item</h2>
                 <input type="hidden" id="hiddenEmail" name="UserEmail">
                 
                 <label>Item Name</label>
-                <input type="text" name="ItemName" placeholder="Ex: Trimmer" required>
+                <input type="text" name="ItemName" placeholder="Ex: Camping Tent" required>
                 
-                <label>Price per Day (₹) <a href="#" onclick="showPriceGuide()" style="font-size: 0.65rem; color: var(--primary-cyan); float: right;">PRICE TIPS?</a></label>
-                <input type="number" name="Price" placeholder="Ex: 150" required>
+                <label>Price per Day (₹)</label>
+                <input type="number" name="Price" placeholder="Ex: 200" required>
                 
-                <label>Your Phone/WhatsApp</label>
+                <label>WhatsApp Number</label>
                 <input type="tel" name="Contact" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
                 
-                <button type="submit" class="submit-btn" style="background: var(--success-green);">SUBMIT ITEM FOR REVIEW</button>
+                <label>Item Photo (Optional)</label>
+                <input type="file" id="itemPhoto" accept="image/*" style="padding: 5px;">
+                
+                <button type="submit" class="submit-btn" style="background: var(--success-green);">SUBMIT ITEM</button>
             </form>
         </div>
-    </header>
 
-    <div class="search-container">
-        <label>Search Community Gear</label>
-        <input type="text" id="searchInput" placeholder="Try searching 'Trimmer' or 'Drill'..." onkeyup="filterItems()">
-    </div>
+        <div class="search-container">
+            <label>Search Community Gear</label>
+            <input type="text" id="searchInput" placeholder="Search Trimmer, Drill, Bag..." onkeyup="filterItems()">
+        </div>
 
-    <section id="inventory" style="padding: 0 20px 40px 20px; max-width: 1100px; width: 100%;">
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h2 style="color: var(--primary-cyan); letter-spacing: 2px;">COMMUNITY LISTINGS</h2>
-            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 10px; flex-wrap: wrap;">
-                <div style="font-size: 0.7rem; color: var(--success-green); border: 1px solid var(--success-green); padding: 5px 10px; border-radius: 20px;">✓ ID VERIFIED</div>
-                <div style="font-size: 0.7rem; color: var(--success-green); border: 1px solid var(--success-green); padding: 5px 10px; border-radius: 20px;">✓ LIVE SYNC</div>
+        <section id="inventory" style="padding: 0 20px 40px 20px; width: 100%; max-width: 1100px;">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="color: var(--primary-cyan); letter-spacing: 2px;">COMMUNITY LISTINGS</h2>
             </div>
-        </div>
+            <div id="dynamic-inventory" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+                <div class="loader"></div>
+            </div>
+        </section>
 
-        <div id="dynamic-inventory" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
-            <div class="loader"></div>
-            <p style="text-align: center; width: 100%; color: var(--text-gray);">Fetching local nodes...</p>
+        <div style="margin: 20px auto 60px auto; text-align: center;">
+            <button onclick="shareNode()" class="cta-button" style="background: transparent; border: 2px solid var(--primary-cyan); color: var(--primary-cyan); width: 250px;">
+                📢 INVITE NEIGHBORS
+            </button>
+            <br><br>
+            <button onclick="logout()" style="background:none; border:none; color:red; cursor:pointer; text-decoration:underline;">Logout Account</button>
         </div>
-    </section>
-
-    <div style="margin: 40px auto; text-align: center; max-width: 400px; padding: 20px;">
-        <button onclick="shareNode()" class="cta-button" style="background: transparent; border: 2px solid var(--primary-cyan); color: var(--primary-cyan);">
-            📢 INVITE NEIGHBORS
-        </button>
     </div>
 
     <footer style="background: #0d1117; padding: 50px 20px; border-top: 1px solid #30363d; width: 100%; text-align: center;">
@@ -211,127 +233,170 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyoFXZuQZE2l7Mxd65Iy8URFc3tALEKqJniASbiq4h206kRJhdxh7pRhL_N9lStAomE/exec';
+        // Replace with your Apps Script Web App URL
+        const scriptURL ='https://script.google.com/macros/s/AKfycbz1VucuBInbgFSSoqgADWG3iNorv7t55-uwUqlWADfBVS7ezsLV0PKi__niiIQwyqD1/exec';
         
-        const activationContainer = document.getElementById('activation-container');
-        const itemContainer = document.getElementById('item-container');
-        const dynamicInventory = document.getElementById('dynamic-inventory');
-        
-        let isNodeActive = false; 
-        let globalUserName = ""; 
-        let allItems = []; 
+        let allItems = [];
+        let globalUserName = "";
 
+        // ON LOAD: Check Session and Setup States
+        window.onload = () => {
+            const savedEmail = localStorage.getItem('neighborEmail');
+            const savedName = localStorage.getItem('neighborName');
+            if (savedEmail && savedName) {
+                globalUserName = savedName;
+                unlockApp(savedEmail);
+            }
+            setupStateDropdown();
+        };
+
+        function toggleAuth(type) {
+            document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
+            document.getElementById('neighborForm').style.display = type === 'signup' ? 'block' : 'none';
+            document.getElementById('tab-login').classList.toggle('active', type === 'login');
+            document.getElementById('tab-signup').classList.toggle('active', type === 'signup');
+        }
+
+        // LOGIN LOGIC
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.toLowerCase();
+            const btn = e.target.querySelector('button');
+            btn.innerText = "VERIFYING...";
+            btn.disabled = true;
+
+            try {
+                const resp = await fetch(`${scriptURL}?checkEmail=${encodeURIComponent(email)}`);
+                const result = await resp.json();
+                if (result.exists) {
+                    localStorage.setItem('neighborEmail', email);
+                    localStorage.setItem('neighborName', result.name);
+                    globalUserName = result.name;
+                    unlockApp(email);
+                } else {
+                    alert("Email not found. Please activate your node first!");
+                    btn.innerText = "ACCESS NETWORK";
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                alert("Server error. Try again.");
+                btn.disabled = false;
+            }
+        });
+
+        function unlockApp(email) {
+            document.getElementById('auth-box').style.display = 'none';
+            document.getElementById('main-app').style.display = 'flex';
+            document.getElementById('hiddenEmail').value = email;
+            document.getElementById('nodeStatus').innerText = `📡 NODE ONLINE: ${globalUserName.toUpperCase()}`;
+            loadLiveInventory();
+        }
+
+        function logout() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        // INVENTORY LOGIC
         async function loadLiveInventory() {
             try {
                 const response = await fetch(scriptURL);
                 const data = await response.json();
                 allItems = data.items.slice(1); 
                 renderItems(allItems);
-            } catch (err) {
-                dynamicInventory.innerHTML = `<p style="color: red;">Sync Error.</p>`;
-            }
+            } catch (err) { console.error(err); }
         }
 
-        function renderItems(itemsToDisplay) {
-            if (!itemsToDisplay || itemsToDisplay.length === 0) {
-                dynamicInventory.innerHTML = `<p style="text-align: center; width:100%; color: var(--text-gray);">No items found.</p>`;
-                return;
-            }
-            dynamicInventory.innerHTML = ""; 
-            itemsToDisplay.forEach(row => {
-                const card = document.createElement('div');
-                card.className = 'item-card';
-                card.innerHTML = `
-                    <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹${row[2]}/DAY</div>
-                    <img src="https://via.placeholder.com/300x200?text=${encodeURIComponent(row[1])}" class="item-img">
-                    <h3>${row[1]}</h3>
-                    <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Available in your area.</p>
-                    <button onclick="checkActivation('${row[1]}', ${row[2]})" class="cta-button">REQUEST RENTAL</button>
-                `;
-                dynamicInventory.appendChild(card);
+        function renderItems(items) {
+            const div = document.getElementById('dynamic-inventory');
+            div.innerHTML = items.length ? "" : "<p style='grid-column: 1/-1;'>No gear listed in this node yet.</p>";
+            items.forEach(row => {
+                const img = row[5] || "https://via.placeholder.com/300x200?text=No+Photo";
+                div.innerHTML += `
+                    <div class="item-card">
+                        <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹${row[2]}/DAY</div>
+                        <img src="${img}" class="item-img" onerror="this.src='https://via.placeholder.com/300x200?text=Image+Loading...'">
+                        <h3>${row[1]}</h3>
+                        <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Verified Kukatpally Neighbor</p>
+                        <button onclick="window.open('https://wa.me/91${row[3]}?text=Hi, I want to rent your ${row[1]}')" class="cta-button">REQUEST RENTAL</button>
+                    </div>`;
             });
         }
 
         function filterItems() {
             const term = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allItems.filter(i => i[1].toString().toLowerCase().includes(term));
-            renderItems(filtered);
+            renderItems(allItems.filter(i => i[1].toString().toLowerCase().includes(term)));
         }
 
-        document.getElementById('neighborForm').addEventListener('submit', e => {
+        // SIGNUP LOGIC
+        document.getElementById('neighborForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = e.target.querySelector('button');
-            const email = e.target.querySelector('[name="Email"]').value;
-            globalUserName = e.target.querySelector('[name="Full Name"]').value;
-            btn.innerText = "SYNCING NODE...";
+            btn.innerText = "ACTIVATING...";
             btn.disabled = true;
-            setTimeout(() => showSuccessState(email), 4000);
-            fetch(scriptURL, { method: 'POST', body: new FormData(e.target), mode: 'no-cors' });
+
+            const formData = new FormData(this);
+            const payload = {};
+            formData.forEach((value, key) => payload[key] = value);
+
+            fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) })
+            .then(() => {
+                alert("Node Activated! Please Login to access the network.");
+                location.reload();
+            });
         });
 
-        function showSuccessState(email) {
-            isNodeActive = true; 
-            itemContainer.style.display = 'block'; 
-            document.getElementById('hiddenEmail').value = email; 
-            activationContainer.innerHTML = `<div style="text-align: center; padding: 20px; border: 2px solid var(--primary-cyan); border-radius: 20px;"><h2 style="color: var(--primary-cyan); margin:0;">WELCOME, ${globalUserName.toUpperCase()}!</h2><p>Node Active.</p></div>`;
-        }
-
-        document.getElementById('itemForm').addEventListener('submit', e => {
+        // ITEM LISTING LOGIC (WITH IMAGE)
+        document.getElementById('itemForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = e.target.querySelector('button');
+            const file = document.getElementById('itemPhoto').files[0];
+            const reader = new FileReader();
+            
             btn.innerText = "UPLOADING...";
             btn.disabled = true;
-            setTimeout(() => { resetListingForm(btn); loadLiveInventory(); }, 4000);
-            fetch(scriptURL, { method: 'POST', body: new FormData(e.target), mode: 'no-cors' });
+
+            const submitData = (base64) => {
+                const payload = {
+                    ItemName: e.target.ItemName.value,
+                    Price: e.target.Price.value,
+                    Contact: e.target.Contact.value,
+                    UserEmail: document.getElementById('hiddenEmail').value,
+                    imageFile: base64
+                };
+                fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) })
+                .then(() => {
+                    alert("Success! Your item is now live.");
+                    location.reload();
+                });
+            };
+
+            if (file) {
+                reader.onload = () => submitData(reader.result);
+                reader.readAsDataURL(file);
+            } else {
+                submitData(null);
+            }
         });
 
-        function resetListingForm(button) {
-            alert("Success! Your item is now live.");
-            document.getElementById('itemForm').reset();
-            button.innerText = "SUBMIT ANOTHER ITEM";
-            button.disabled = false;
+        // FULL STATE DATA (ALL 28 STATES)
+        function setupStateDropdown() {
+            const stateData = {
+                "Andhra Pradesh": "Amaravati", "Arunachal Pradesh": "Itanagar", "Assam": "Dispur", "Bihar": "Patna", "Chhattisgarh": "Raipur", "Goa": "Panaji", "Gujarat": "Gandhinagar", "Haryana": "Chandigarh", "Himachal Pradesh": "Shimla", "Jharkhand": "Ranchi", "Karnataka": "Bengaluru", "Kerala": "Thiruvananthapuram", "Madhya Pradesh": "Bhopal", "Maharashtra": "Mumbai", "Manipur": "Imphal", "Meghalaya": "Shillong", "Mizoram": "Aizawl", "Nagaland": "Kohima", "Odisha": "Bhubaneswar", "Punjab": "Chandigarh", "Rajasthan": "Jaipur", "Sikkim": "Gangtok", "Tamil Nadu": "Chennai", "Telangana": "Hyderabad", "Tripura": "Agartala", "Uttar Pradesh": "Lucknow", "Uttarakhand": "Dehradun", "West Bengal": "Kolkata", "Delhi": "New Delhi"
+            };
+            const sSelect = document.getElementById('state');
+            const cSelect = document.getElementById('city');
+            
+            const sortedStates = Object.keys(stateData).sort();
+            sSelect.innerHTML = '<option value="">Select State</option>' + sortedStates.map(s => `<option value="${s}">${s}</option>`).join('');
+            
+            sSelect.onchange = () => {
+                cSelect.innerHTML = `<option value="${stateData[sSelect.value]}">${stateData[sSelect.value]}</option>`;
+            };
         }
 
-        function checkActivation(item, price) {
-            if (!isNodeActive) { alert("Activate Node first!"); window.scrollTo(0, 0); }
-            else { window.open(`https://wa.me/918497956893?text=${encodeURIComponent("Hi! I want to rent " + item + " for ₹" + price)}`, '_blank'); }
-        }
-
-        function showTerms() { alert("Rules: Respect assets, pay for damage, and meet in public."); }
-        function showPriceGuide() { alert("Pricing: Tools ₹50-150, Travel ₹100-250, Gear ₹200+"); }
+        function showTerms() { alert("Respect assets, pay for damage, and meet in public."); }
         function shareNode() { window.open(`https://wa.me/?text=${encodeURIComponent("Join NeighborNode: " + window.location.href)}`, '_blank'); }
-
-        // COMPLETE INDIA STATES DATA
-        const stateData = {
-            "Andhra Pradesh": "Amaravati", "Arunachal Pradesh": "Itanagar", "Assam": "Dispur", "Bihar": "Patna", "Chhattisgarh": "Raipur", "Goa": "Panaji", "Gujarat": "Gandhinagar", "Haryana": "Chandigarh", "Himachal Pradesh": "Shimla", "Jharkhand": "Ranchi", "Karnataka": "Bengaluru", "Kerala": "Thiruvananthapuram", "Madhya Pradesh": "Bhopal", "Maharashtra": "Mumbai", "Manipur": "Imphal", "Meghalaya": "Shillong", "Mizoram": "Aizawl", "Nagaland": "Kohima", "Odisha": "Bhubaneswar", "Punjab": "Chandigarh", "Rajasthan": "Jaipur", "Sikkim": "Gangtok", "Tamil Nadu": "Chennai", "Telangana": "Hyderabad", "Tripura": "Agartala", "Uttar Pradesh": "Lucknow", "Uttarakhand": "Dehradun", "West Bengal": "Kolkata", "Delhi": "New Delhi"
-        };
-
-        const countrySelect = document.getElementById('country');
-        const stateSelect = document.getElementById('state');
-        const citySelect = document.getElementById('city');
-
-        countrySelect.addEventListener('change', function() {
-            if (this.value === "India") {
-                stateSelect.disabled = false;
-                // Sort states alphabetically for better experience
-                const sortedStates = Object.keys(stateData).sort();
-                stateSelect.innerHTML = '<option value="">Select State</option>' + sortedStates.map(s => `<option value="${s}">${s}</option>`).join('');
-            }
-        });
-
-        stateSelect.addEventListener('change', function() {
-            if (this.value !== "") {
-                citySelect.disabled = false;
-                citySelect.innerHTML = `<option value="${stateData[this.value]}">${stateData[this.value]}</option>`;
-            }
-        });
-
-        const nodeText = document.getElementById('nodeCounter');
-        const statuses = ["📡 SCANNING LOCAL NODES...", "✅ LIVE INVENTORY SYNCED", "📍 HUB ACTIVE"];
-        let statusIdx = 0;
-        setInterval(() => { nodeText.innerText = statuses[statusIdx % statuses.length]; statusIdx++; }, 3000);
-
-        window.onload = loadLiveInventory;
     </script>
 </body>
 </html>
