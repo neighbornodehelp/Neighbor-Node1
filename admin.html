@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NeighborNode | Admin Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background: #0a0e14; color: white; padding: 20px; }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: #161b22; border: 1px solid #30363d; border-radius: 15px; padding: 20px; }
+        h2 { color: #00f2ff; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+        th { text-align: left; color: #8b949e; padding: 10px; border-bottom: 1px solid #30363d; }
+        td { padding: 10px; border-bottom: 1px solid #21262d; }
+        .stat { font-size: 2rem; font-weight: bold; color: #00f2ff; }
+        .refresh-btn { background: #2ea043; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; float: right; }
+    </style>
+</head>
+<body>
+
+    <button class="refresh-btn" onclick="loadData()">🔄 REFRESH DATA</button>
+    <h1>🚀 Admin Command Center</h1>
+    
+    <div class="dashboard-grid">
+        <div class="card">
+            <h2>Active Nodes</h2>
+            <div id="nodeCount" class="stat">0</div>
+            <table id="nodeTable">
+                <thead><tr><th>Name</th><th>City</th><th>Email</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Live Inventory</h2>
+            <div id="itemCount" class="stat">0</div>
+            <table id="itemTable">
+                <thead><tr><th>Item</th><th>Price</th><th>Owner</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = 'PASTE_YOUR_NEW_DEPLOY_URL_HERE';
+
+        async function loadData() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.innerText = "FETCHING...";
+            
+            try {
+                const response = await fetch(scriptURL);
+                const data = await response.json();
+                
+                // Populate Nodes (Starting from index 1 to skip headers)
+                const nodeBody = document.querySelector('#nodeTable tbody');
+                nodeBody.innerHTML = "";
+                data.nodes.slice(1).forEach(row => {
+                    nodeBody.innerHTML += `<tr><td>${row[1]}</td><td>${row[4]}</td><td>${row[5]}</td></tr>`;
+                });
+                document.getElementById('nodeCount').innerText = data.nodes.length - 1;
+
+                // Populate Items
+                const itemBody = document.querySelector('#itemTable tbody');
+                itemBody.innerHTML = "";
+                data.items.slice(1).forEach(row => {
+                    itemBody.innerHTML += `<tr><td>${row[1]}</td><td>₹${row[2]}</td><td>${row[4]}</td></tr>`;
+                });
+                document.getElementById('itemCount').innerText = data.items.length - 1;
+
+            } catch (err) {
+                alert("Error loading data. Make sure your Script URL is correct!");
+            } finally {
+                btn.innerText = "🔄 REFRESH DATA";
+            }
+        }
+
+        // Initial Load
+        loadData();
+    </script>
+</body>
+</html>
