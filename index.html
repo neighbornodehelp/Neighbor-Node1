@@ -99,6 +99,17 @@
 
         header { padding: 40px 20px; text-align: center; max-width: 800px; }
         h1 { font-size: 3.5rem; margin: 0; background: linear-gradient(90deg, #fff, var(--primary-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-cyan);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -113,10 +124,8 @@
         <div id="activation-container" class="form-container">
             <form id="neighborForm">
                 <h2 style="margin-top: 0;">1. Activate Your Node</h2>
-                
                 <label>Full Name</label>
-                <input type="text" name="Full Name" placeholder="Ex: Rahul Sharma" 
-                       pattern="[A-Za-z\s]+" title="Please use letters only (No numbers)" required>
+                <input type="text" name="Full Name" placeholder="Ex: Rahul Sharma" pattern="[A-Za-z\s]+" title="Letters only" required>
                 
                 <label>Country</label>
                 <select id="country" name="Country" required>
@@ -125,14 +134,10 @@
                 </select>
 
                 <label>State</label>
-                <select id="state" name="State" disabled required>
-                    <option value="">Select State</option>
-                </select>
+                <select id="state" name="State" disabled required><option value="">Select State</option></select>
 
                 <label>District/City (Capital)</label>
-                <select id="city" name="City" disabled required>
-                    <option value="">Select Capital</option>
-                </select>
+                <select id="city" name="City" disabled required><option value="">Select Capital</option></select>
                 
                 <label>Email Address</label>
                 <input type="email" name="Email" placeholder="rahul@example.com" required>
@@ -143,7 +148,6 @@
                         I agree to the <a href="#" onclick="showTerms()" style="color: var(--primary-cyan); text-decoration: underline;">Community Guidelines</a>.
                     </label>
                 </div>
-
                 <button type="submit" class="submit-btn">ACTIVATE MY NODE</button>
             </form>
         </div>
@@ -151,20 +155,13 @@
         <div id="item-container" class="form-container" style="border-color: var(--success-green); display: none;">
             <form id="itemForm">
                 <h2 style="color: var(--success-green); margin-top: 0;">2. List Your Item</h2>
-                <p style="font-size: 0.8rem; color: var(--text-gray); margin-bottom: 15px;">Earn by lending your tools/gear.</p>
-                
                 <input type="hidden" id="hiddenEmail" name="UserEmail">
-                
                 <label>Item Name</label>
                 <input type="text" name="ItemName" placeholder="Ex: Camping Tent" required>
-                
                 <label>Price per Day (₹) <a href="#" onclick="showPriceGuide()" style="font-size: 0.65rem; color: var(--primary-cyan); float: right;">PRICE TIPS?</a></label>
                 <input type="number" name="Price" placeholder="Ex: 200" required>
-                
                 <label>Your Phone/WhatsApp</label>
-                <input type="tel" name="Contact" placeholder="10-digit mobile number" 
-                       pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number" required>
-                
+                <input type="tel" name="Contact" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
                 <button type="submit" class="submit-btn" style="background: var(--success-green);">SUBMIT ITEM FOR REVIEW</button>
             </form>
         </div>
@@ -172,45 +169,16 @@
 
     <section id="inventory" style="padding: 40px 20px; max-width: 1100px; width: 100%;">
         <div style="text-align: center; margin-bottom: 40px;">
-            <h2 style="color: var(--primary-cyan); letter-spacing: 2px;">NEIGHBOR INVENTORY</h2>
+            <h2 style="color: var(--primary-cyan); letter-spacing: 2px;">COMMUNITY LISTINGS</h2>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 10px; flex-wrap: wrap;">
+                <div style="font-size: 0.7rem; color: var(--success-green); border: 1px solid var(--success-green); padding: 5px 10px; border-radius: 20px;">✓ ID VERIFIED</div>
+                <div style="font-size: 0.7rem; color: var(--success-green); border: 1px solid var(--success-green); padding: 5px 10px; border-radius: 20px;">✓ LIVE SYNC</div>
+            </div>
         </div>
-<div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;">
-    <div style="font-size: 0.7rem; color: var(--success-green); border: 1px solid var(--success-green); padding: 5px 10px; border-radius: 20px;">✓ ID VERIFIED NODES</div>
-    <div style="font-size: 0.7rem; color: var(--success-green); border: 1px solid var(--success-green); padding: 5px 10px; border-radius: 20px;">✓ SECURE DATA SYNC</div>
-    <div style="font-size: 0.7rem; color: var(--success-green); border: 1px solid var(--success-green); padding: 5px 10px; border-radius: 20px;">✓ KUKATPALLY EXCLUSIVE</div>
-</div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
-            <div class="item-card">
-                <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹150/DAY</div>
-                <img src="download.jfif" class="item-img" alt="Travel Trolley" onerror="this.src='https://via.placeholder.com/300x200?text=Trolley+Bag'">
-                <h3>Premium Trolley Bag</h3>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Large hard-shell spinner. Smooth wheels.</p>
-                <button onclick="checkActivation('Travel Trolley', 150)" class="cta-button">REQUEST RENTAL</button>
-            </div>
 
-            <div class="item-card">
-                <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹250/DAY</div>
-                <img src="download (1).jfif" class="item-img" alt="Drill" onerror="this.src='https://via.placeholder.com/300x200?text=Power+Drill'">
-                <h3>Power Drill Kit</h3>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">High torque, includes bits.</p>
-                <button onclick="checkActivation('Power Drill Kit', 250)" class="cta-button">REQUEST RENTAL</button>
-            </div>
-
-            <div class="item-card">
-                <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹100/DAY</div>
-                <img src="download (2).jfif" class="item-img" alt="Chairs" onerror="this.src='https://via.placeholder.com/300x200?text=Chair+Set'">
-                <h3>Guest Chair Set</h3>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Set of 2 foldable chairs.</p>
-                <button onclick="checkActivation('Guest Chair Set', 100)" class="cta-button">REQUEST RENTAL</button>
-            </div>
-
-            <div class="item-card">
-                <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹50/DAY</div>
-                <img src="download (3).jfif" class="item-img" alt="Iron" onerror="this.src='https://via.placeholder.com/300x200?text=Iron+Box'">
-                <h3>Iron Box</h3>
-                <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Non-stick soleplate.</p>
-                <button onclick="checkActivation('Iron Box', 50)" class="cta-button">REQUEST RENTAL</button>
-            </div>
+        <div id="dynamic-inventory" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+            <div class="loader"></div>
+            <p style="text-align: center; width: 100%; color: var(--text-gray);">Fetching local nodes...</p>
         </div>
     </section>
 
@@ -226,15 +194,52 @@
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzymf-9h0A2pRXd2tJSSdRhtE1OyoQPD3hm9Ar5YWZQkg8kQjRKLd6crvqQlIsyvxmz/exec';
+        // UPDATE THIS URL with your latest "New Version" Deployment
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyoFXZuQZE2l7Mxd65Iy8URFc3tALEKqJniASbiq4h206kRJhdxh7pRhL_N9lStAomE/exec';
+        
         const activationContainer = document.getElementById('activation-container');
         const itemContainer = document.getElementById('item-container');
         const itemForm = document.getElementById('itemForm');
+        const dynamicInventory = document.getElementById('dynamic-inventory');
         
         let isNodeActive = false; 
         let globalUserName = ""; 
 
-        // 1. Activation Logic with Validation & "Stuck" Fix
+        // 1. Fetch Live Inventory from Google Sheet for User B
+        async function loadLiveInventory() {
+            try {
+                const response = await fetch(scriptURL);
+                const data = await response.json();
+                const items = data.items; // This comes from your 'doGet' function
+
+                if (!items || items.length <= 1) {
+                    dynamicInventory.innerHTML = `<p style="text-align: center; width:100%; color: var(--text-gray);">No items listed yet. Be the first to list!</p>`;
+                    return;
+                }
+
+                dynamicInventory.innerHTML = ""; // Clear loader
+                
+                // Skip header row and show items
+                items.slice(1).forEach(row => {
+                    // row[1]=Name, row[2]=Price, row[3]=Contact
+                    const card = document.createElement('div');
+                    card.className = 'item-card';
+                    card.innerHTML = `
+                        <div style="position: absolute; top: 10px; right: 10px; background: var(--primary-cyan); color: black; padding: 4px 10px; border-radius: 10px; font-weight: 900; font-size: 0.8rem;">₹${row[2]}/DAY</div>
+                        <img src="https://via.placeholder.com/300x200?text=${encodeURIComponent(row[1])}" class="item-img" alt="${row[1]}">
+                        <h3>${row[1]}</h3>
+                        <p style="color: var(--text-gray); font-size: 0.85rem; margin-bottom: 15px;">Available in your Node.</p>
+                        <button onclick="checkActivation('${row[1]}', ${row[2]})" class="cta-button">REQUEST RENTAL</button>
+                    `;
+                    dynamicInventory.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Sync Error:", err);
+                dynamicInventory.innerHTML = `<p style="color: red;">Failed to sync inventory. Try refreshing.</p>`;
+            }
+        }
+
+        // 2. Activation Logic
         document.getElementById('neighborForm').addEventListener('submit', e => {
             e.preventDefault();
             const form = e.target;
@@ -245,14 +250,10 @@
             btn.innerText = "SYNCING NODE...";
             btn.disabled = true;
 
-            // Timer to force proceed if Google is slow
             const forceSuccess = setTimeout(() => showSuccessState(emailValue), 4000);
 
             fetch(scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors' })
-            .then(() => {
-                clearTimeout(forceSuccess);
-                showSuccessState(emailValue);
-            })
+            .then(() => { clearTimeout(forceSuccess); showSuccessState(emailValue); })
             .catch(() => showSuccessState(emailValue)); 
         });
 
@@ -264,35 +265,35 @@
                 <div style="text-align: center; padding: 20px; border: 2px solid var(--primary-cyan); border-radius: 20px;">
                     <h2 style="color: var(--primary-cyan); margin:0;">WELCOME, ${globalUserName.toUpperCase()}!</h2>
                     <p style="color: var(--text-gray);">Node Active. You can now rent or list items below.</p>
-                </div>
-            `;
+                </div>`;
         }
 
-        // 2. Listing Logic with "Stuck" Fix
+        // 3. Listing Logic (User A adds an item)
         itemForm.addEventListener('submit', e => {
             e.preventDefault();
             const btn = itemForm.querySelector('button');
             btn.innerText = "UPLOADING...";
             btn.disabled = true;
 
-            const forceReset = setTimeout(() => resetListingForm(btn), 4000);
+            const forceReset = setTimeout(() => { resetListingForm(btn); loadLiveInventory(); }, 4000);
 
             fetch(scriptURL, { method: 'POST', body: new FormData(itemForm), mode: 'no-cors' })
-            .then(() => {
-                clearTimeout(forceReset);
-                resetListingForm(btn);
+            .then(() => { 
+                clearTimeout(forceReset); 
+                resetListingForm(btn); 
+                loadLiveInventory(); // Immediately refresh inventory for the user
             })
-            .catch(() => resetListingForm(btn));
+            .catch(() => { resetListingForm(btn); loadLiveInventory(); });
         });
 
         function resetListingForm(button) {
-            alert("Success! Your item has been sent for review.");
+            alert("Success! Your item is now live for neighbors.");
             itemForm.reset();
             button.innerText = "SUBMIT ANOTHER ITEM";
             button.disabled = false;
         }
 
-        // 3. Popups & Sharing
+        // 4. Popups & Sharing
         function showTerms() { alert("Rules: Take photos before use, pay for damage, and meet in public."); }
         function showPriceGuide() { alert("Pricing: Tools ₹50-150, Travel ₹100-250, Gear ₹200+"); }
         function shareNode() {
@@ -309,17 +310,14 @@
             }
         }
 
-        // 4. Status Animation
+        // 5. Node Status Animation
         const nodeText = document.getElementById('nodeCounter');
-        const statuses = ["📡 SCANNING HYDERABAD...", "🔐 ENCRYPTING NODE...", "✅ 14 NEIGHBORS ONLINE", "📍 HUB ACTIVE"];
+        const statuses = ["📡 SCANNING HYDERABAD...", "🔐 ENCRYPTING NODE...", "✅ LIVE INVENTORY SYNCED", "📍 HUB ACTIVE"];
         let statusIdx = 0;
-        setInterval(() => {
-            nodeText.innerText = statuses[statusIdx % statuses.length];
-            statusIdx++;
-        }, 3000);
+        setInterval(() => { nodeText.innerText = statuses[statusIdx % statuses.length]; statusIdx++; }, 3000);
 
-        // 5. Dropdown Logic
-        const stateData = { "Telangana": "Hyderabad", "Andhra Pradesh": "Amaravati", "Karnataka": "Bengaluru", "Maharashtra": "Mumbai", "Tamil Nadu": "Chennai", "Delhi": "New Delhi" };
+        // 6. Dropdown Logic
+        const stateData = { "Telangana": "Hyderabad", "Andhra Pradesh": "Amaravati", "Karnataka": "Bengaluru", "Maharashtra": "Mumbai", "Tamil Nadu": "Chennai", "Delhi": "New Delhi", "Arunachal Pradesh":"Itanagar","Assam":"Dispur", "Bihar":"Patna","Chhattisgarh":"Raipur", "Goa":"Panaji","Gujarat":"Gandhinagar","Haryana":"Chandigarh","Himalchal Pradesh":"Shimla","Jharkhand":"Ranchi","Odissa":"Bhuabaneshwar","Punjab":"Chandigarh","West Bengal":"Kolkata" };
         const countrySelect = document.getElementById('country');
         const stateSelect = document.getElementById('state');
         const citySelect = document.getElementById('city');
@@ -337,6 +335,9 @@
                 citySelect.innerHTML = `<option value="${stateData[this.value]}">${stateData[this.value]}</option>`;
             }
         });
+
+        // Run on Page Load
+        window.onload = loadLiveInventory;
     </script>
 </body>
 </html>
