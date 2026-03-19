@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeighborNode | Secure Neighborhood Rental Network</title>
+    <title>NeighborNode | Community Asset Network</title>
     <style>
         :root {
             --primary-cyan: #00f2ff;
@@ -13,12 +13,14 @@
             --success-green: #2ea043;
             --error-red: #f85149;
             --verify-blue: #1d9bf0;
+            --rented-gray: #30363d;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background-color: var(--bg-dark);
-            color: white;
+            color: #e6edf3;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -26,47 +28,43 @@
             overflow-x: hidden;
         }
 
-        /* HEADER STYLING */
-        header { padding: 60px 20px; text-align: center; max-width: 800px; width: 100%; }
+        header { padding: 70px 20px; text-align: center; max-width: 900px; width: 100%; }
         h1 { 
-            font-size: 4rem; 
+            font-size: 4.5rem; 
             margin: 0; 
-            background: linear-gradient(90deg, #fff, var(--primary-cyan)); 
+            background: linear-gradient(135deg, #fff, var(--primary-cyan)); 
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent;
-            letter-spacing: -2px;
+            letter-spacing: -3px;
             font-weight: 800;
         }
 
-        /* CONTAINER STYLING */
+        #nodeStatus {
+            color: var(--primary-cyan);
+            font-weight: 900;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
         .form-container {
             background: var(--card-bg);
             border: 1px solid #30363d;
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 40px;
-            width: 100%;
-            max-width: 450px;
+            width: 95%;
+            max-width: 550px;
             margin: 20px auto;
             box-sizing: border-box;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            transition: 0.4s;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
-        /* INPUT STYLING */
-        label { 
-            color: var(--primary-cyan); 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            font-weight: 800; 
-            display: block; 
-            text-align: left; 
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
+        label { color: var(--primary-cyan); font-size: 0.7rem; text-transform: uppercase; font-weight: 800; display: block; margin-bottom: 8px; letter-spacing: 1px; }
 
         select, input {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             margin-bottom: 20px;
             border-radius: 12px;
             border: 1px solid #30363d;
@@ -75,15 +73,11 @@
             outline: none;
             box-sizing: border-box;
             font-size: 1rem;
-            transition: 0.3s;
         }
 
-        select:focus, input:focus { border-color: var(--primary-cyan); box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
-
-        /* BUTTONS */
         .submit-btn, .cta-button {
             background: var(--primary-cyan);
-            color: black;
+            color: #000;
             font-weight: 900;
             padding: 16px;
             border: none;
@@ -91,45 +85,50 @@
             cursor: pointer;
             width: 100%;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             transition: 0.3s;
         }
 
-        .submit-btn:hover, .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 242, 255, 0.4);
-        }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 242, 255, 0.3); }
 
-        /* AUTH TABS */
-        .auth-tabs { display: flex; gap: 15px; margin-bottom: 30px; justify-content: center; }
-        .tab-btn { 
-            background: none; 
-            border: 1px solid #30363d; 
-            color: var(--text-gray); 
-            padding: 10px 20px; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-weight: bold;
-            transition: 0.3s;
+        .category-bar {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            width: 100%;
+            max-width: 1000px;
+            padding: 20px;
+            scrollbar-width: none;
         }
-        .tab-btn.active { border-color: var(--primary-cyan); color: var(--primary-cyan); background: rgba(0, 242, 255, 0.05); }
-
-        /* ITEM CARDS */
-        .item-card {
-            background: rgba(255,255,255,0.02);
+        .category-bar::-webkit-scrollbar { display: none; }
+        
+        .cat-tab {
+            background: var(--card-bg);
             border: 1px solid #30363d;
-            padding: 30px;
+            color: var(--text-gray);
+            padding: 10px 22px;
+            border-radius: 25px;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .cat-tab.active { border-color: var(--primary-cyan); color: var(--primary-cyan); background: rgba(0, 242, 255, 0.08); }
+
+        .item-card {
+            background: var(--card-bg);
+            border: 1px solid #30363d;
+            padding: 25px;
             border-radius: 24px;
             text-align: center;
             position: relative;
-            transition: 0.4s;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .item-card:hover {
-            border-color: var(--primary-cyan);
-            background: rgba(0, 242, 255, 0.05);
-            transform: translateY(-10px);
-        }
+        .item-card.rented-out { opacity: 0.5; filter: grayscale(0.8); }
 
         .price-badge {
             position: absolute;
@@ -138,146 +137,143 @@
             background: var(--primary-cyan);
             color: black;
             padding: 6px 12px;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 900;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        .location-tag {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            margin: 10px 0 20px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
+        .status-pill {
+            font-size: 0.65rem;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 10px;
         }
 
-        /* GATED CONTENT */
-        #main-app { display: none; width: 100%; max-width: 1200px; flex-direction: column; align-items: center; padding-bottom: 100px; }
+        .status-available { background: rgba(46, 160, 67, 0.15); color: var(--success-green); border: 1px solid var(--success-green); }
+        .status-rented { background: rgba(248, 81, 73, 0.15); color: var(--error-red); border: 1px solid var(--error-red); }
 
-        .loader {
-            border: 4px solid rgba(255,255,255,0.1);
-            border-top: 4px solid var(--primary-cyan);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 40px auto;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* VERIFICATION CARD */
-        #verify-card {
-            border: 2px solid var(--verify-blue);
-            background: rgba(29, 155, 240, 0.05);
+        .invite-section {
+            width: 100%;
             max-width: 600px;
-            display: none;
+            background: linear-gradient(145deg, #1d9bf015, #00f2ff05);
+            border: 1px dashed var(--primary-cyan);
+            border-radius: 24px;
+            padding: 30px;
+            margin: 60px 0;
             text-align: center;
         }
+
+        #main-app { display: none; width: 100%; max-width: 1200px; flex-direction: column; align-items: center; }
+
+        .loader { border: 4px solid rgba(255,255,255,0.05); border-top: 4px solid var(--primary-cyan); border-radius: 50%; width: 45px; height: 45px; animation: spin 1s infinite; margin: 50px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <header>
-        <div id="nodeStatus" style="color: var(--primary-cyan); font-weight: bold; margin-bottom: 15px; font-size: 0.9rem; letter-spacing: 3px;">📡 NODE STATUS: LOCKED</div>
+        <div id="nodeStatus">📡 NODE STATUS: LOCKED</div>
         <h1>NeighborNode</h1>
-        <p style="color: var(--text-gray); font-size: 1.1rem;">Secure Peer-to-Peer Neighborhood Network.</p>
-
         <div id="auth-box" class="form-container">
-            <div class="auth-tabs">
-                <button id="tab-login" class="tab-btn active" onclick="toggleAuth('login')">LOGIN</button>
-                <button id="tab-signup" class="tab-btn" onclick="toggleAuth('signup')">ACTIVATE NODE</button>
+            <div style="display:flex; justify-content: center; gap:15px; margin-bottom: 30px;">
+                <button id="tab-login" class="cat-tab active" onclick="toggleAuth('login')">LOGIN</button>
+                <button id="tab-signup" class="cat-tab" onclick="toggleAuth('signup')">SIGNUP</button>
             </div>
-
             <form id="loginForm">
                 <label>Registered Email</label>
-                <input type="email" id="loginEmail" placeholder="Enter your email address" required>
+                <input type="email" id="loginEmail" placeholder="Enter node email" required>
                 <button type="submit" class="submit-btn">ACCESS NETWORK</button>
             </form>
-
             <form id="neighborForm" style="display: none;">
-                <label>Full Name</label>
-                <input type="text" name="Full Name" placeholder="Ex: Rahul Sharma" required>
-                <label>Country</label>
-                <select id="country" name="Country" required><option value="India">India</option></select>
-                <label>State</label>
-                <select id="state" name="State" required><option value="">Select State</option></select>
-                <label>District/City (Capital)</label>
-                <select id="city" name="City" required><option value="">Select Capital</option></select>
-                <label>Email Address</label>
-                <input type="email" name="Email" placeholder="rahul@example.com" required>
+                <label>Full Name</label><input type="text" name="Full Name" placeholder="Rahul Sharma" required>
+                <label>State</label><select id="state" name="State" required></select>
+                <label>Capital City</label><select id="city" name="City" required></select>
+                <label>Email</label><input type="email" name="Email" placeholder="rahul@example.com" required>
                 <button type="submit" class="submit-btn">ACTIVATE NODE</button>
             </form>
         </div>
     </header>
 
     <div id="main-app">
-        <div id="verify-card" class="form-container">
+        <div id="verify-card" class="form-container" style="border: 2px solid var(--verify-blue); background: rgba(29, 155, 240, 0.05); display:none; text-align:center;">
             <h3 style="color: var(--verify-blue); margin-top: 0;">🛡️ Get Trusted Badge</h3>
-            <p style="color: var(--text-gray); font-size: 0.9rem;">Verify your Aadhaar to get the blue checkmark ✅ and rent items faster.</p>
-            <button onclick="requestVerification()" class="cta-button" style="background: var(--verify-blue); color: white;">VERIFY MY IDENTITY</button>
+            <p style="color: var(--text-gray); font-size: 0.9rem;">Verify Aadhaar for the blue checkmark ✅</p>
+            <button onclick="requestVerification()" class="cta-button" style="background: var(--verify-blue); color: white;">VERIFY VIA WHATSAPP</button>
         </div>
 
         <div class="form-container" style="border-color: var(--success-green); max-width: 600px;">
             <form id="itemForm">
-                <h2 style="color: var(--success-green); margin-top: 0; text-align: center;">List Community Gear</h2>
+                <h2 id="formTitle" style="color: var(--success-green); text-align: center; margin-top:0;">List Community Gear</h2>
                 <input type="hidden" id="hiddenEmail" name="UserEmail">
+                <input type="hidden" id="isEdit" name="isEdit" value="false">
+                <input type="hidden" id="oldItemName" name="oldItemName" value="">
+                <input type="hidden" id="itemStatus" name="Status" value="Available">
+
+                <label>Category</label>
+                <select name="Category" required>
+                    <option value="Tools">🛠️ Tools</option>
+                    <option value="Electronics">🔌 Electronics</option>
+                    <option value="Household">🏠 Home</option>
+                    <option value="Vehicle">🚗 Vehicle</option>
+                    <option value="Other">📦 Other</option>
+                </select>
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div>
-                        <label>Item Name</label>
-                        <input type="text" name="ItemName" placeholder="Ex: Power Drill" required>
-                    </div>
-                    <div>
-                        <label>Price/Day (₹)</label>
-                        <input type="number" name="Price" placeholder="Ex: 150" required>
-                    </div>
+                    <div><label>Item Name</label><input type="text" name="ItemName" required></div>
+                    <div><label>Price/Day</label><input type="number" name="Price" required></div>
                 </div>
-                <label>WhatsApp Number</label>
-                <input type="tel" name="Contact" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
-                <label>Specific Place / Landmark</label>
-                <input type="text" name="Place" placeholder="Ex: Kukatpally, Phase 1" required>
-                <button type="submit" class="submit-btn" style="background: var(--success-green);">POST LISTING</button>
+
+                <label>WhatsApp Number</label><input type="tel" name="Contact" pattern="[0-9]{10}" required>
+                <label>Location / Landmark</label><input type="text" name="Place" required>
+                <button type="submit" id="submitBtn" class="submit-btn" style="background: var(--success-green);">POST LISTING</button>
+                <button type="button" id="cancelEditBtn" onclick="cancelEdit()" style="display:none; background:none; border:none; color:var(--text-gray); width:100%; margin-top:10px; cursor:pointer;">Cancel Edit</button>
             </form>
         </div>
 
-        <div style="width: 100%; max-width: 700px; margin: 50px auto; padding: 0 20px; box-sizing: border-box;">
-            <label style="text-align: center; font-size: 1rem; margin-bottom: 15px;">Search Local Inventory</label>
-            <input type="text" id="searchInput" placeholder="Try 'Trimmer', 'Drill'..." onkeyup="filterItems()" style="text-align: center; font-size: 1.2rem; padding: 20px; border-radius: 20px;">
+        <div class="category-bar">
+            <div class="cat-tab active" onclick="filterByCategory('All')">All Feed</div>
+            <div class="cat-tab" onclick="filterByCategory('Tools')">Tools</div>
+            <div class="cat-tab" onclick="filterByCategory('Electronics')">Gadgets</div>
+            <div class="cat-tab" onclick="filterByCategory('Household')">Home</div>
+            <div class="cat-tab" onclick="filterByCategory('Vehicle')">Vehicles</div>
         </div>
 
-        <section id="inventory-section" style="width: 100%; padding: 0 20px;">
-            <div id="dynamic-inventory" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-                <div class="loader"></div>
-            </div>
-        </section>
+        <h2 id="myListingsTitle" style="width:100%; max-width:1100px; color:var(--success-green); border-bottom:1px solid #333; padding-bottom:15px; display:none;">YOUR LISTINGS</h2>
+        <div id="my-inventory" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; width: 100%; padding: 20px;"></div>
 
-        <div style="margin-top: 80px; text-align: center;">
-            <button onclick="shareNode()" class="cta-button" style="background: transparent; border: 2px solid var(--primary-cyan); color: var(--primary-cyan); width: auto; padding: 15px 40px;">📢 INVITE NEIGHBORS</button>
-            <p onclick="logout()" style="color: var(--error-red); cursor: pointer; margin-top: 30px; text-decoration: underline; font-weight: bold;">Logout Account</p>
+        <h2 style="width:100%; max-width:1100px; color:var(--primary-cyan); border-bottom:1px solid #333; padding-bottom:15px; margin-top:50px;">NEIGHBORHOOD FEED</h2>
+        <div id="dynamic-inventory" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; width: 100%; padding: 20px;">
+            <div class="loader"></div>
         </div>
+
+        <div class="invite-section">
+            <h3 style="color: var(--primary-cyan); margin-top: 0;">📢 Growing the Network</h3>
+            <p style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 25px;">NeighborNode works best when the whole street is on it. Invite your friends to list their gear!</p>
+            <button onclick="shareNode()" class="cta-button" style="background: transparent; border: 2px solid var(--primary-cyan); color: var(--primary-cyan); width: auto; padding: 15px 40px;">INVITE NEIGHBORS VIA WHATSAPP</button>
+        </div>
+        
+        <p onclick="logout()" style="color: var(--error-red); cursor: pointer; margin-bottom: 80px; text-decoration: underline; font-weight: bold;">Logout Account</p>
     </div>
 
-    <footer style="margin-top: 100px; padding: 40px; border-top: 1px solid #30363d; width: 100%; text-align: center; color: var(--text-gray); font-size: 0.8rem;">
-        &copy; 2026 NeighborNode Network. All Rights Reserved.
+    <footer>
+        <p>&copy; 2026 NeighborNode Network | Decentralized Community Rental Infrastructure</p>
     </footer>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbznZiKTkVndDru2r8M-3KgQrkAjT7WOpZRzWmzAIdmjblpxEoi2M3GGKKyCJktM1a64/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycby8XUeEfnTgjmTHok1blTWKVKVpD2B9SPQi4vQQYp1aJkjxg9VSGP7OqWw_mFSWzhES/exec';
         const ADMIN_EMAIL = 'neighbornode.help@gmail.com'; 
+        const ADMIN_PHONE = '917416558510';
         
         let allItems = [];
-        let globalUserName = "";
+        let currentCategory = 'All';
         let isAdmin = false;
 
         window.onload = () => {
-            const savedEmail = localStorage.getItem('neighborEmail');
-            const savedName = localStorage.getItem('neighborName');
-            if (savedEmail && savedName) {
-                globalUserName = savedName;
-                isAdmin = (savedEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase());
-                unlockApp(savedEmail);
-            }
+            const email = localStorage.getItem('neighborEmail');
+            if (email) unlockApp(email);
             setupDropdowns();
         };
 
@@ -288,112 +284,175 @@
             document.getElementById('tab-signup').classList.toggle('active', type === 'signup');
         }
 
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        async function handleLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value.toLowerCase();
+            const email = document.getElementById('loginEmail').value.toLowerCase().trim();
             const btn = e.target.querySelector('button');
             btn.innerText = "AUTHENTICATING...";
-            try {
-                const resp = await fetch(`${scriptURL}?checkEmail=${encodeURIComponent(email)}`);
-                const res = await resp.json();
-                if (res.exists) {
-                    localStorage.setItem('neighborEmail', email);
-                    localStorage.setItem('neighborName', res.name);
-                    globalUserName = res.name;
-                    isAdmin = (email === ADMIN_EMAIL.toLowerCase());
-                    unlockApp(email);
-                } else { alert("Account not found!"); btn.innerText = "ACCESS NETWORK"; }
-            } catch (err) { alert("Error connecting to server."); }
-        });
+            const resp = await fetch(`${scriptURL}?checkEmail=${encodeURIComponent(email)}`);
+            const res = await resp.json();
+            if (res.exists) {
+                localStorage.setItem('neighborEmail', email);
+                localStorage.setItem('neighborName', res.name);
+                unlockApp(email);
+            } else { alert("Node not found!"); btn.innerText = "ACCESS NETWORK"; }
+        }
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
 
         function unlockApp(email) {
+            isAdmin = (email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
             document.getElementById('auth-box').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
             document.getElementById('hiddenEmail').value = email;
-            document.getElementById('nodeStatus').innerText = isAdmin ? "📡 ADMIN NODE ONLINE" : `📡 NODE ONLINE: ${globalUserName.toUpperCase()}`;
+            document.getElementById('nodeStatus').innerText = isAdmin ? "📡 ADMIN CONTROL ACTIVE" : `📡 NODE ONLINE: ${localStorage.getItem('neighborName').toUpperCase()}`;
             loadInventory();
         }
 
         async function loadInventory() {
-            try {
-                const resp = await fetch(scriptURL);
-                const data = await resp.json();
-                allItems = data.items.slice(1);
-                
-                // Check if the current user is verified to hide/show the card
-                const currentUserEmail = localStorage.getItem('neighborEmail');
-                const userRow = allItems.find(row => row[4] && row[4].toString().toLowerCase() === currentUserEmail.toLowerCase());
-                const isVerified = (userRow && userRow[6] === "YES");
-                
-                if (!isVerified && !isAdmin) {
-                    document.getElementById('verify-card').style.display = 'block';
-                }
-
-                renderItems(allItems);
-            } catch (err) { console.error(err); }
+            const resp = await fetch(scriptURL);
+            const data = await resp.json();
+            allItems = data.items.slice(1);
+            const email = localStorage.getItem('neighborEmail').toLowerCase();
+            const user = allItems.find(r => r[4] && r[4].toLowerCase() === email);
+            const isV = (user && user[8] === "YES");
+            if (!isV && !isAdmin) document.getElementById('verify-card').style.display = 'block';
+            renderItems(allItems);
         }
 
         function renderItems(list) {
-            const div = document.getElementById('dynamic-inventory');
-            div.innerHTML = list.length ? "" : "<p>No items found.</p>";
+            const mainDiv = document.getElementById('dynamic-inventory');
+            const myDiv = document.getElementById('my-inventory');
+            const myEmail = localStorage.getItem('neighborEmail').toLowerCase();
+            mainDiv.innerHTML = ""; myDiv.innerHTML = "";
+            let myCount = 0;
+
             list.forEach(row => {
-                const isVerified = (row[6] === "YES");
-                div.innerHTML += `
-                    <div class="item-card">
-                        <div class="price-badge">₹${row[2]}/DAY</div>
-                        <h3 style="margin-top:20px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                            ${row[1]} ${isVerified ? '<span style="color: #1d9bf0;">✅</span>' : ''}
-                        </h3>
-                        <div class="location-tag">
-                            📍 ${row[5] || 'Area Not Specified'}
-                            ${isVerified ? '<span style="color: #1d9bf0; font-size: 0.7rem; font-weight:bold;">TRUSTED NEIGHBOR</span>' : ''}
+                const cat = row[6] || "Other";
+                const owner = row[4] ? row[4].toLowerCase() : "";
+                const status = row[7] || "Available";
+                const isV = (row[8] === "YES");
+                const isRented = (status === "Rented Out");
+
+                if (currentCategory !== 'All' && cat !== currentCategory) return;
+
+                const cardHtml = `
+                    <div class="item-card ${isRented ? 'rented-out' : ''}">
+                        <div class="price-badge">${isRented ? 'RENTED' : '₹'+row[2]}</div>
+                        <div style="text-align:left;"><span class="status-pill ${isRented ? 'status-rented' : 'status-available'}">${status}</span></div>
+                        <h3 style="margin:10px 0;">${row[1]} ${isV ? '✅' : ''}</h3>
+                        <p style="color:var(--text-gray); font-size:0.9rem;">📍 ${row[5]}</p>
+                        <div style="margin-top:20px;">
+                            ${owner === myEmail ? 
+                                `<div style="display:grid; gap:10px;">
+                                    <button onclick="toggleStatus('${row[1]}', '${status}')" style="background:var(--success-green); color:white; border:none; padding:12px; border-radius:12px; cursor:pointer; font-weight:bold;">MARK AS ${isRented ? 'AVAILABLE' : 'RENTED OUT'}</button>
+                                    <div style="display:flex; gap:10px;">
+                                        <button onclick="startEdit('${row[1]}','${row[2]}','${row[3]}','${row[5]}','${cat}')" style="flex:1; background:none; border:1px solid var(--primary-cyan); color:var(--primary-cyan); padding:10px; border-radius:12px; cursor:pointer;">EDIT</button>
+                                        <button onclick="deleteItem('${row[1]}', '${row[4]}')" style="flex:1; background:var(--error-red); color:white; border:none; padding:10px; border-radius:12px; cursor:pointer;">DEL</button>
+                                    </div>
+                                </div>` : 
+                                `<button onclick="${isRented ? '' : "window.open('https://wa.me/91" + row[3] + "')"}" class="cta-button" ${isRented ? 'style="background:#333; cursor:not-allowed;" disabled' : ''}>${isRented ? 'NOT AVAILABLE' : 'RENT NOW'}</button>`
+                            }
                         </div>
-                        <button onclick="window.open('https://wa.me/91${row[3]}')" class="cta-button">RENT NOW</button>
-                        ${isAdmin ? `<button onclick="deleteItem('${row[1]}', '${row[4]}')" style="background:red; color:white; margin-top:15px; border:none; padding:10px; border-radius:10px; width:100%; cursor:pointer; font-weight:bold;">DELETE AS ADMIN</button>` : ''}
                     </div>`;
+
+                if (owner === myEmail) { myDiv.innerHTML += cardHtml; myCount++; }
+                else { mainDiv.innerHTML += cardHtml; }
             });
+            document.getElementById('myListingsTitle').style.display = myCount > 0 ? 'block' : 'none';
         }
+
+        async function toggleStatus(name, current) {
+    const next = current === "Available" ? "Rented Out" : "Available";
+    const myEmail = localStorage.getItem('neighborEmail').toLowerCase().trim();
+    
+    // Find the current item in our local memory
+    const itm = allItems.find(r => r[1].toString().toLowerCase().trim() === name.toLowerCase().trim() && r[4].toLowerCase().trim() === myEmail);
+    
+    if (!itm) {
+        alert("Error: Item not found in local sync.");
+        return;
+    }
+
+    const fd = new FormData();
+    fd.append('ItemName', itm[1]); 
+    fd.append('Price', itm[2]); 
+    fd.append('Contact', itm[3]);
+    fd.append('UserEmail', itm[4]); 
+    fd.append('Place', itm[5]); 
+    fd.append('Category', itm[6]);
+    fd.append('Status', next); 
+    fd.append('isEdit', 'true'); 
+    fd.append('oldItemName', itm[1]); // This must match exactly what's in the sheet!
+
+    // Show a small loading hint
+    alert(`Updating status to ${next}... please wait.`);
+
+    await fetch(scriptURL, { method: 'POST', body: fd, mode: 'no-cors' });
+    
+    // Force a reload to see the clean sheet
+    location.reload();
+}
+        
+
+        function startEdit(name, price, contact, place, category) {
+            document.getElementById('itemForm').scrollIntoView({behavior: 'smooth'});
+            const form = document.getElementById('itemForm');
+            form.ItemName.value = name; form.Price.value = price;
+            form.Contact.value = contact; form.Place.value = place;
+            form.Category.value = category;
+            document.getElementById('isEdit').value = "true";
+            document.getElementById('oldItemName').value = name;
+            document.getElementById('formTitle').innerText = "Update Listing";
+            document.getElementById('submitBtn').innerText = "CONFIRM CHANGES";
+            document.getElementById('submitBtn').style.background = "var(--verify-blue)";
+            document.getElementById('cancelEditBtn').style.display = "block";
+        }
+
+        function cancelEdit() { location.reload(); }
 
         async function deleteItem(name, owner) {
             if(!confirm(`Delete "${name}"?`)) return;
-            const response = await fetch(`${scriptURL}?action=delete&itemName=${encodeURIComponent(name)}&ownerEmail=${encodeURIComponent(owner)}`);
-            alert("Deleted!"); loadInventory();
+            await fetch(`${scriptURL}?action=delete&itemName=${encodeURIComponent(name)}&ownerEmail=${encodeURIComponent(owner)}`);
+            loadInventory();
         }
 
-        function requestVerification() {
-            const name = localStorage.getItem('neighborName');
-            const email = localStorage.getItem('neighborEmail');
-            const adminPhone = "917416558510"; 
-            const msg = `Hi Admin, I am ${name} (${email}). I want to verify my Aadhaar for NeighborNode.`;
-            window.open(`https://wa.me/${adminPhone}?text=${encodeURIComponent(msg)}`, '_blank');
-        }
-
-        function filterItems() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            renderItems(allItems.filter(i => i[1].toString().toLowerCase().includes(term) || i[5].toString().toLowerCase().includes(term)));
+        function filterByCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-tab').forEach(t => t.classList.toggle('active', t.innerText.includes(cat)));
+            renderItems(allItems);
         }
 
         function setupDropdowns() {
-            const stateData = { "Andhra Pradesh": "Amaravati", "Arunachal Pradesh": "Itanagar", "Assam": "Dispur", "Bihar": "Patna", "Chhattisgarh": "Raipur", "Goa": "Panaji", "Gujarat": "Gandhinagar", "Haryana": "Chandigarh", "Himachal Pradesh": "Shimla", "Jharkhand": "Ranchi", "Karnataka": "Bengaluru", "Kerala": "Thiruvananthapuram", "Madhya Pradesh": "Bhopal", "Maharashtra": "Mumbai", "Manipur": "Imphal", "Meghalaya": "Shillong", "Mizoram": "Aizawl", "Nagaland": "Kohima", "Odisha": "Bhubaneswar", "Punjab": "Chandigarh", "Rajasthan": "Jaipur", "Sikkim": "Gangtok", "Tamil Nadu": "Chennai", "Telangana": "Hyderabad", "Tripura": "Agartala", "Uttar Pradesh": "Lucknow", "Uttarakhand": "Dehradun", "West Bengal": "Kolkata", "Delhi": "New Delhi" };
+            const states = { 
+                "Andhra Pradesh": "Amaravati", "Arunachal Pradesh": "Itanagar", "Assam": "Dispur", "Bihar": "Patna", "Chhattisgarh": "Raipur", 
+                "Goa": "Panaji", "Gujarat": "Gandhinagar", "Haryana": "Chandigarh", "Himachal Pradesh": "Shimla", "Jharkhand": "Ranchi", 
+                "Karnataka": "Bengaluru", "Kerala": "Thiruvananthapuram", "Madhya Pradesh": "Bhopal", "Maharashtra": "Mumbai", "Manipur": "Imphal", 
+                "Meghalaya": "Shillong", "Mizoram": "Aizawl", "Nagaland": "Kohima", "Odisha": "Bhubaneswar", "Punjab": "Chandigarh", 
+                "Rajasthan": "Jaipur", "Sikkim": "Gangtok", "Tamil Nadu": "Chennai", "Telangana": "Hyderabad", "Tripura": "Agartala", 
+                "Uttar Pradesh": "Lucknow", "Uttarakhand": "Dehradun", "West Bengal": "Kolkata", "Delhi": "New Delhi" 
+            };
             const sSelect = document.getElementById('state');
             const cSelect = document.getElementById('city');
-            const sorted = Object.keys(stateData).sort();
-            sSelect.innerHTML = '<option value="">Select State</option>' + sorted.map(s => `<option value="${s}">${s}</option>`).join('');
-            sSelect.onchange = () => { cSelect.innerHTML = `<option value="${stateData[sSelect.value]}">${stateData[sSelect.value]}</option>`; };
+            sSelect.innerHTML = '<option value="">Select State</option>' + Object.keys(states).sort().map(s => `<option value="${s}">${s}</option>`).join('');
+            sSelect.onchange = () => { cSelect.innerHTML = `<option value="${states[sSelect.value]}">${states[sSelect.value]}</option>`; };
         }
 
         document.getElementById('itemForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            fetch(scriptURL, { method: 'POST', body: new FormData(this), mode: 'no-cors' }).then(() => { alert("Listing Live!"); location.reload(); });
+            fetch(scriptURL, { method: 'POST', body: new FormData(this), mode: 'no-cors' }).then(() => location.reload());
         });
 
         document.getElementById('neighborForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            fetch(scriptURL, { method: 'POST', body: new FormData(this), mode: 'no-cors' }).then(() => { alert("Signup Success! Login now."); location.reload(); });
+            fetch(scriptURL, { method: 'POST', body: new FormData(this), mode: 'no-cors' }).then(() => location.reload());
         });
 
         function logout() { localStorage.clear(); location.reload(); }
-        function shareNode() { window.open(`https://wa.me/?text=${encodeURIComponent("Join NeighborNode: " + window.location.href)}`, '_blank'); }
+        function shareNode() { 
+            const msg = `Hey! I'm using NeighborNode to rent and lend tools with our neighbors. Join our trust-based network here: ${window.location.href}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank'); 
+        }
+        function requestVerification() { window.open(`https://wa.me/${ADMIN_PHONE}?text=Aadhaar Verification for NeighborNode`); }
     </script>
 </body>
 </html>
